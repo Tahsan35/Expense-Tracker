@@ -3,8 +3,22 @@ import express from "express";
 import cors from "cors";
 import { connectDB } from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
+import path from "path";
+import { fileURLToPath } from 'url';
+
+// Get the directory name correctly in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
+
+// Create uploads directory if it doesn't exist
+import fs from 'fs';
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+  console.log('Created uploads directory');
+}
 
 //middleware to handle cors
 app.use(
@@ -19,6 +33,9 @@ app.use(express.json());
 //api routes
 app.use("/api/v1/auth", authRoutes);
 
+//serve uploads folder
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 // Test route
 app.get("/", (req, res) => {
   res.send("API is running...");
@@ -31,6 +48,8 @@ const startServer = async () => {
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
+      console.log(`Server directory: ${__dirname}`);
+      console.log(`Uploads directory: ${uploadsDir}`);
     });
   } catch (error) {
     console.error("Failed to start server:", error);
