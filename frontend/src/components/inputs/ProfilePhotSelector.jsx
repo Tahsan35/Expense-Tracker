@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { LuUser, LuUpload, LuTrash } from "react-icons/lu";
+//import { LuUser, LuUpload, LuTrash } from "react-icons/lu";
 
 const ProfilePhotSelector = ({ image, setImage }) => {
   const inputRef = useRef(null);
