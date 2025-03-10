@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import AuthLayout from "../../components/layouts/AuthLayout";
 import { Link, useNavigate } from "react-router-dom";
 import { Input } from "../../components/inputs/Input";
 import ProfilePhotSelector from "../../components/inputs/ProfilePhotSelector";
+import axiosInstance from "../../utils/axiosinstance";
+import { API_PATHS } from "../../utils/apiPaths";
+import { UserContext } from "../../context/userContext";
+import uploadImage from "../../utils/uploadImage";
 
 const SignUp = () => {
   const [profilePic, setProfilePic] = useState(null);
@@ -11,10 +15,13 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  const { updateUser } = useContext(UserContext);
+
   const navigate = useNavigate();
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+    let profileImageUrl = "";
     if (!name || !email || !password) {
       setError("All fields are required");
       return;
@@ -27,7 +34,31 @@ const SignUp = () => {
       setError("Email must be valid");
       return;
     }
-    navigate("/dashboard");
+    //navigate("/dashboard");
+
+    //signup API call
+
+    try {
+      //upload profile pic
+      if (profilePic) {
+        const uploadRes = await uploadImage(profilePic);
+        profileImageUrl = uploadRes.imageUrl || "";
+      }
+      const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
+        name,
+        email,
+        password,
+        profileImageUrl,
+      });
+      const { token, user } = response.data;
+      if (token) {
+        localStorage.setItem("token", token);
+        updateUser(user);
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      setError(error.response.data.message);
+    }
   };
 
   return (
