@@ -1,6 +1,6 @@
 import React from "react";
 
-const InfoCard = () => {
+const InfoCard = ({ icon, label, color, value }) => {
   return <div>InfoCard</div>;
 };
 

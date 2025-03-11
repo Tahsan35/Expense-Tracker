@@ -1,4 +1,3 @@
-import { get } from "mongoose";
 import { getInitials } from "../../utils/helper";
 
 const CharAvatar = ({ fullName, width, height, style }) => {
