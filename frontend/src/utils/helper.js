@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const getInitials = (name) => {
   if (!name) return "";
   const words = name.split(" ");
@@ -26,5 +28,17 @@ export const prepareExpenseBarChartData = (data = []) => {
     amount: item?.amount,
   }));
 
+  return chartData;
+};
+
+export const prepareIncomeBarChartData = (data = []) => {
+  const sortedData = [...data].sort(
+    (a, b) => new Date(a.date) - new Date(b.date)
+  );
+  const chartData = sortedData.map((item) => ({
+    month: moment(item?.date).format("DO MMM"),
+    amount: item?.amount,
+    source: item?.source,
+  }));
   return chartData;
 };
