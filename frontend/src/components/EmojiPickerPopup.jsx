@@ -33,9 +33,9 @@ const EmojiPickerPopup = ({ icon, onSelect }) => {
             <LuX />
           </button>
           <EmojiPicker
+            open={isOpen}
             onEmojiClick={(emoji) => {
               onSelect(emoji?.imageUrl || "");
-              setIsOpen(false);
             }}
           />
         </div>

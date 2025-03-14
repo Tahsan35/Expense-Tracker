@@ -5,6 +5,7 @@ import axiosInstance from "../../utils/axiosinstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import Modal from "../../components/Modal";
 import AddIncomeForm from "../../components/income/AddIncomeForm";
+import toast from "react-hot-toast";
 
 const Income = () => {
   const [openAddIncomeModal, setOpenAddIncomeModal] = useState(true);
@@ -21,7 +22,6 @@ const Income = () => {
     setIsLoading(true);
     try {
       const response = await axiosInstance.get(
-    GET_INCOME: "/api/v1/income/get",
         `${API_PATHS.INCOME.GET_INCOME}`
       );
       if (response.data) {
@@ -35,7 +35,15 @@ const Income = () => {
   };
 
   //handle add Income
-  const handleAddIncome = async (income) => {};
+  const handleAddIncome = async (income) => {
+    const { source, amount, date, icon } = income;
+
+    //validation check
+    if (!source.trim()) {
+      toast.error("source must be required");
+      return;
+    }
+  };
 
   // delete income
   const deleteIncome = async (id) => {};
@@ -57,14 +65,12 @@ const Income = () => {
             />
           </div>
         </div>
-        <Modal 
-        isOpen={openAddIncomeModal}
-        onClose={()=> setOpenAddIncomeModal(false)}
-        title="Add Income"
+        <Modal
+          isOpen={openAddIncomeModal}
+          onClose={() => setOpenAddIncomeModal(false)}
+          title="Add Income"
         >
-          <AddIncomeForm
-            onAddIncome={handleAddIncome}
-          />
+          <AddIncomeForm onAddIncome={handleAddIncome} />
         </Modal>
       </div>
     </DashboardLayout>
