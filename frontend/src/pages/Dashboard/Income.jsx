@@ -1,7 +1,6 @@
 import { useState } from "react";
 import DashboardLayout from "../../components/layouts/DashboardLayout";
 import IncomeOverview from "../../components/income/IncomeOverview";
-import { data } from "react-router-dom";
 import axiosInstance from "../../utils/axiosinstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import Modal from "../../components/Modal";
@@ -65,7 +64,6 @@ const Income = () => {
         >
           <AddIncomeForm
             onAddIncome={handleAddIncome}
-            onClose={() => setOpenAddIncomeModal(false)}
           />
         </Modal>
       </div>
