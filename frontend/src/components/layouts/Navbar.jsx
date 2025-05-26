@@ -2,6 +2,8 @@ import { useState } from "react";
 import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
 import SideMenu from "./SideMenu";
 
+import PropTypes from "prop-types";
+
 const Navbar = ({ activeMenu }) => {
   const [openSideMenu, setOpenSideMenu] = useState(false);
   return (
@@ -19,7 +21,9 @@ const Navbar = ({ activeMenu }) => {
         )}
       </button>
 
-      <h2 className="text-lg font-medium text-black">Expense Tracker</h2>
+      <h2 className="text-lg font-medium text-black bg-green-500">
+        Expense Tracker
+      </h2>
       {openSideMenu && (
         <div className="fixed top-[61px] -ml-4 bg-white">
           <SideMenu activeMenu={activeMenu}></SideMenu>
@@ -30,3 +34,6 @@ const Navbar = ({ activeMenu }) => {
 };
 
 export default Navbar;
+Navbar.propTypes = {
+  activeMenu: PropTypes.object,
+};
